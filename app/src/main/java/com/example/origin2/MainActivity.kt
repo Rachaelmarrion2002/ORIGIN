@@ -4,7 +4,6 @@ import LoaderIntro
 import OnBoardingData
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
@@ -42,7 +41,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.example.origin2.ui.theme.ORIGIN2Theme
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -52,6 +50,21 @@ import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        @SuppressLint("CustomSplashScreen")
+        class SplashActivity: ComponentActivity() {
+
+            override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                lifecycleScope.launchWhenCreated {
+                    delay(3000)
+
+                    val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+
+        }
         super.onCreate(savedInstanceState)
         setContent {
             ORIGIN2Theme {
@@ -71,35 +84,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun  MainFunction() {
     val items = ArrayList<OnBoardingData>()
-    items.add(
-        OnBoardingData(
-            R.raw.coffee,
-            title = "Origin ",
-            desc = "Welcome to Origin.We are a Homegrown Kenyan authentic Fusion restaurant showcasing global cuisine using fresh local ingredients. Our brand features a Coffee shop,Restaurant,BBQ Steak House,Artisan Pizza,Wine & Cocktail Bar and a Bakery. Our Journey began 2018 when a concept Casual coffee shop was born and evolved into a foodie destination for our guests to experience the love for food. We are all about crafting unique Great Culinary Moments for our guests"
-        )
-    )
-    items.add(
-        OnBoardingData(
-            R.raw.pizza,
-            title = "Origin ",
-            desc = "VISION:To be the preferred hospitality company in the ownership and management of Hospitality outlets in key markets of Africa."
-        )
-    )
-    items.add(
-        OnBoardingData(
-            R.raw.burger,
-            title = "Origin ",
-            desc = "MISSION:To be the most hospitable company in the world by creating heartfelt experiences for our Guests, meaningful opportunities for our Associates,high value for Owners and positive impact in our communities."
-        )
-    )
-    items.add(
-        OnBoardingData(
-            R.raw.chips,
-            title = "Get Started ",
-            desc = "Find the best coffee for you",
 
-        )
-    )
+//    items.add(
+//        OnBoardingData(
+//            R.raw.coffee,
+//            title = "Get Started ",
+//            desc = "Find the best coffee for you",
+//
+//        )
+//    )
     val pagerState = com.google.accompanist.pager.rememberPagerState(
         initialPage = 0,
         infiniteLoop = false,
@@ -111,7 +104,7 @@ fun  MainFunction() {
         pagerState = pagerState,
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Black),
+            .background(color = Color.White),
     )
 
 }
@@ -151,14 +144,14 @@ fun OnBoardingPager(
                       text = item[page].title,
                       modifier = Modifier
                           .padding(top = 50 .dp),
-                      color = Color.White,
+                      color = Color.Black,
                       textAlign = TextAlign.Start
                   )
                   Text(
                       text = item[page].desc,
                       modifier = Modifier
                           .padding(top = 30.dp, start = 10 .dp, end = 20 .dp),
-                      color = Color.White,
+                      color = Color.Black,
                       textAlign = TextAlign.Start
                   )
               }
@@ -221,7 +214,7 @@ fun BottomSection(currentPage: Int){
                  text = "Get Started",
                  modifier = Modifier
                      .padding(vertical = 8 .dp, horizontal = 40 .dp),
-                 color = White
+                 color = Black
              )
           }
       }else{
@@ -234,7 +227,7 @@ fun BottomSection(currentPage: Int){
 fun SkipNextButton(text: String, modifier: Modifier){
     Text(
         text = text,
-        color = Color.White,
+        color = Color.Black,
         modifier = modifier,
         fontSize = 18.sp,
         style = MaterialTheme.typography.bodyLarge,
